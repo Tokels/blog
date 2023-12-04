@@ -288,8 +288,7 @@ export default AnotherComponent;
 
 ## Here's a documentation on how to use the SplitScreen.tsx 3.0 component:
 
-# SplitScreen.tsx
-
+```md
 1. _Modular and reusable layout component_
 
 2. _This component will render every child_
@@ -323,6 +322,7 @@ export default AnotherComponent;
      - `styleParent`
    - Style your childrens parent
      - `styleChildren`
+```
 
 ## Conclusion
 
