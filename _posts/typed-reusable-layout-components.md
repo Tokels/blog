@@ -220,7 +220,7 @@ Now, let's make an even more complex `SplitScreen` component. This component wil
 
 import React from "react";
 import type { FC, ReactElement } from "react";
-import { View } from "react-native";
+
 interface SplitScreenProps {
   children: ReactElement[];
   weigths?: number[];
@@ -241,7 +241,7 @@ const SplitScreen: FC<SplitScreenProps> = ({
   // If no weigths are provided, w (weights) will default to 1 per element
   const w = weigths?.length > 0 ? weigths : children.map(() => 1);
   return (
-    <View
+    <section
       className={`flex flex-${
         row ? "row" : "col"
       } h-full w-full ${styleParent}`}
@@ -249,7 +249,7 @@ const SplitScreen: FC<SplitScreenProps> = ({
       {children.map((component, idx) => {
         const flex = w[idx];
         return (
-          <View
+          <article
             className={`${
               centered && "justify-center items-center"
             } ${styleChildren}`}
@@ -257,10 +257,10 @@ const SplitScreen: FC<SplitScreenProps> = ({
             style={{ flex }}
           >
             {component}
-          </View>
+          </article>
         );
       })}
-    </View>
+    </section>
   );
 };
 
