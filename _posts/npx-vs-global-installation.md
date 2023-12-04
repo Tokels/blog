@@ -1,5 +1,5 @@
 ---
-title: "Comparing `npx` and Global Package Installations in npm"
+title: "Comparing npx and Global Package Installations in npm"
 excerpt: "Node Package Manager (npm) offers developers versatile ways to manage packages, and two prominent methods are using `npx` and installing packages globally. Both approaches have their strengths and considerations, catering to different scenarios in the development workflow."
 coverImage: "/assets/blog/npx-vs-global-installation/cover.jpg"
 date: "2023-01-12T10:45:39.322Z"
@@ -10,7 +10,7 @@ ogImage:
   url: "/assets/blog/npx-vs-global-installation/cover.jpg"
 ---
 
-# Comparing `npx` and Global Package Installations in npm
+## Comparing `npx` and Global Package Installations in npm
 
 Node Package Manager (npm) offers developers versatile ways to manage packages, and two prominent methods are using `npx` and installing packages globally. Both approaches have their strengths and considerations, catering to different scenarios in the development workflow.
 

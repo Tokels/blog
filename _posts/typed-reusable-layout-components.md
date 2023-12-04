@@ -10,7 +10,7 @@ ogImage:
   url: "/assets/blog/typed-reusable-layout-components/cover.jpg"
 ---
 
-# Creating Reusable Layout Components in React with TypeScript
+## Creating Reusable Layout Components in React with TypeScript
 
 React, paired with TypeScript, provides a powerful combination for building modular and maintainable applications. One of the key principles in achieving this goal is the creation of reusable layout components. In this article, we'll explore the significance of reusable layout components and walk through the process of building them using TypeScript.
 
@@ -196,9 +196,6 @@ export default SplitScreen;
 ```tsx
 // Example usage in another component
 
-
-
-
 import React from 'react';
 import SplitScreen from '../path';
 
@@ -210,10 +207,6 @@ const AnotherComponent: React.FC = () => {
     </Splitscreen>
   );
 };
-
-
-
-
 
 export default AnotherComponent;
 ```

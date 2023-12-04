@@ -9,7 +9,7 @@ type Props = {
 
 const Layout = ({ preview, children }: Props) => {
   return (
-    <div className="bg-neutral-200 ">
+    <div className="bg-neutral-200 w-full">
       <Meta />
       <div className="min-h-screen  text-neutral-600">
         <Alert preview={preview} />
