@@ -1,0 +1,9 @@
+{
+  "workbench.colorTheme": "Bearded Theme Stained Purple",
+  // "files.autoSave": "afterDelay",
+  "workbench.iconTheme": "material-icon-theme",
+  // Default (format when you paste)
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": false,
+  "prettier.singleQuote": false
+}
