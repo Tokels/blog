@@ -2,7 +2,7 @@
 title: "Creating Reusable Layout Components in React with TypeScript"
 excerpt: "React, paired with TypeScript, provides a powerful combination for building modular and maintainable applications. One of the key principles in achieving this goal is the creation of reusable layout components. In this article, we'll explore the significance of reusable layout components and walk through the process of building them using TypeScript."
 coverImage: "/assets/blog/typed-reusable-layout-components/cover.jpg"
-date: "2023-04-12T12:35:07.322Z"
+date: "2023-12-04T12:35:07.322Z"
 author:
   name: Julia Stjerna
   picture: "/assets/blog/authors/julia.jpeg"
