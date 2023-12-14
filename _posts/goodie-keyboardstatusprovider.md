@@ -72,7 +72,7 @@ export const KeyboardStatusProvider = ({
 
 ### Good to know:
 
-You can also pass setters if you need you components to be able to set local state of the context provider. To type such setter do this:
+You can also pass setters if you need your components to be able to set local state of the context provider. To type such setter do this:
 
 ```javascript
 type KeyboardStatusProps = {
