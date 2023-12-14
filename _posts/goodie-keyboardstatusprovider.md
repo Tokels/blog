@@ -1,13 +1,13 @@
 ---
 title: "Goodie! Keyboard status context provider"
 excerpt: "Your welcome! Here's a goodie for you: a keyboard status context provider for React Native, of course using typescript. At the end: all you need is a hook!"
-coverImage: "/assets/blog/dare-to-question/cover.jpg"
+coverImage: "/assets/blog/goodie-keyboardstatusprovider/cover.jpg"
 date: "2023-12-05T10:45:39.322Z"
 author:
   name: Julia Stjerna
   picture: "/assets/blog/authors/julia.jpeg"
 ogImage:
-  url: "/assets/blog/dare-to-question/cover.jpg"
+  url: "/assets/blog/goodie-keyboardstatusprovider/cover.jpg"
 ---
 
 ## Goodie! Keyboard status context provider
