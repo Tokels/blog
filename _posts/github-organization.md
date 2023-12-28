@@ -1,13 +1,13 @@
 ---
 title: "Unlocking Collaboration and Organization: The Power of GitHub Organizations"
 excerpt: "GitHub organizations provide a structured and collaborative space for individuals and teams to manage, contribute to, and organize their projects. This is not merely a matter of aesthetics; it's a strategic move that can significantly enhance your workflow, scalability, and overall efficiency."
-coverImage: "/assets/blog/npx-vs-global-installation/cover.jpg"
+coverImage: "/assets/blog/github-organization/cover.jpg"
 date: "2023-12-20T09:45:22.322Z"
 author:
   name: Julia Stjerna
   picture: "/assets/blog/authors/julia.jpeg"
 ogImage:
-  url: "/assets/blog/npx-vs-global-installation/cover.jpg"
+  url: "/assets/blog/github-organization/cover.jpg"
 ---
 
 # Unlocking Collaboration and Organization: The Power of GitHub Organizations
