@@ -2,7 +2,7 @@
 title: "The Power of Context Providers - Toastify"
 excerpt: "Get cleaner code by using Context Providers"
 coverImage: "/assets/blog/goodie-keyboardstatusprovider/cover.jpg"
-date: "2023-12-01T10:45:39.322Z"
+date: "2023-12-27T10:45:39.322Z"
 author:
   name: Julia Stjerna
   picture: "/assets/blog/authors/julia.jpeg"
@@ -20,16 +20,14 @@ const DoSomething = () => {
 
   const handlePress = async () => {
     try {
-        await doSomethingAsync();
-        setToast((prevState) => ({...prevState, success: "I Did Something!"}))
+      await doSomethingAsync();
+      setToast((prevState) => ({ ...prevState, success: "I Did Something!" }));
     } catch (error) {
-        (prevState) => ({ ...prevState, error })
+      (prevState) => ({ ...prevState, error });
     }
-  }
+  };
 
-  return (
-    <Button title="Do Something" onPress={handlePress}>
-  )
+  return <Button title="Do Something" onPress={handlePress} />;
 };
 ```
 
