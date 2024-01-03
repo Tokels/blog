@@ -1,13 +1,13 @@
 ---
 title: "Side Effects in UX Design"
 excerpt: "Side effects refer to changes that a function or an expression makes to the state of the program or the environment outside of its own scope. But lets talk about it from a UX designers point of view."
-coverImage: "/assets/blog/side-effets-ux/cover.jpg"
+coverImage: "/assets/blog/side-effects-ux/cover.jpg"
 date: "2023-12-01T10:45:39.322Z"
 author:
   name: Julia Stjerna
   picture: "/assets/blog/authors/julia.jpeg"
 ogImage:
-  url: "/assets/blog/side-effets-ux/cover.jpg"
+  url: "/assets/blog/side-effects-ux/cover.jpg"
 ---
 
 ## Side Effects in UX Design
