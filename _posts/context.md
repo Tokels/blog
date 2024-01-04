@@ -24,13 +24,13 @@ type Props = {
   <all the props you need>
 };
 
-const Context = createContext < Partial < Props >> {};
+const Context = createContext<Partial<Props>>({});
 
 export function useCustomContext() {
   return useContext(Context);
 }
 
-export default function ContextProvider({ children: ReactElement }) {
+export default function ContextProvider({ children }: { children: ReactElement }) {
   return (
     <Context.Provider value={{<all the props you need>}}>
       {children}

@@ -186,18 +186,17 @@ const InitialLayout = () => {
 To create the `useAuth` custom hook we'll use the Context API. The only thing we need to create a Context that can wrap our app (or parts of our app is that is preferred) is this generic template:
 
 ```javascript
-// ContextProvider.tsx
 type Props = {
   <all the props you need>
 };
 
-const Context = createContext < Partial < Props >> {};
+const Context = createContext<Partial<Props>>({});
 
 export function useCustomContext() {
   return useContext(Context);
 }
 
-export default function ContextProvider({ children: ReactElement }) {
+export default function ContextProvider({ children }: { children: ReactElement }) {
   return (
     <Context.Provider value={{<all the props you need>}}>
       {children}
@@ -220,15 +219,15 @@ export default function RootLayout() {
 }
 ```
 
-Since we'll have multiple providers in our app we'll adapt this to our own purpose:
+Since we'll have multiple providers in our app we'll adapt this to our own purpose, and update `_layout` accordingly:
 
-```javascript
+```typescript
 type AuthProps = {
-  token: string,
-  initialized: boolean,
+  token: string;
+  initialized: boolean;
 };
 
-const AuthContext = createContext < Partial < AuthProps >> {};
+const AuthContext = createContext<Partial<AuthProps>>({});
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -237,6 +236,14 @@ export function useAuth() {
 export default function AuthProvider({ children: ReactElement }) {
   const [token, setToken] = useState("");
   const [initialized, setInitializsed] = useState(false);
+
+  useEffect(() => {
+    const loadToken = () => {
+      setToken("valid-token");
+      setInitialized(true);
+    };
+    loadToken();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ token, initialized }}>
@@ -249,3 +256,5 @@ export default function AuthProvider({ children: ReactElement }) {
 Later we'll add other props such as `onLogin`, `onRegister` and more complex logic to the `Provider`. The `AuthProvider` will be the keystone of our Authentication, where all the magic happens.
 
 ### Step 5. Dummy for onLogin, onLogout and onRegister
+
+WIP
