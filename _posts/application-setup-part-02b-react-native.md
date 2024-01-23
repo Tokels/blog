@@ -255,6 +255,210 @@ export default function AuthProvider({ children: ReactElement }) {
 
 Later we'll add other props such as `onLogin`, `onRegister` and more complex logic to the `Provider`. The `AuthProvider` will be the keystone of our Authentication, where all the magic happens.
 
-### Step 5. Dummy for onLogin, onLogout and onRegister
+[Here's my commit for this step](https://github.com/Tokels/react-native-template/pull/45/commits/2556cadfae8571608f559960766f20b1937d1e9a)
 
-WIP
+### Step 5. Dummy for handleLogin, handleLogout and handleRegister
+
+We're taking baby steps, each pull request has it's own purpose, and don't worry, we'll style it later once the logic is in place.
+
+For this step we'll add `handleLogin`, `handleLogout` and `handleRegister`.
+
+Our baby steps:
+
+1. We want `handleLogin` to call an `authorize` function placed in our `api` folder. This function just returns a string that says: 'valid-token'. The result of this function will update the `token` state variable.
+2. We want `handleLogout` to reset the `token` state variable to an empty string
+3. For now, the `handleRegister` will behave like the `handleLogin` function
+
+Add the three functions to your provider and specify them in your `AuthProps`:
+
+```javascript
+const handleLogin = () => {
+  const token = authorize();
+  setToken(token);
+};
+
+const handleLogout = () => {
+  setToken("");
+};
+
+const handleRegister = () => {
+  const token = authorize();
+  setToken(token);
+};
+```
+
+Remove the `setToken('valid-token')` from `loadToken`, we want to have a `Button` on our `Login` page that calls the `handleLogin` function instead.
+
+Create the `authorize` function, I put it in `src/api/Auth/index.ts`. This will handle some external API calls later to give us a proper JWT.
+
+```javascript
+export const authorize = () => "valid-token";
+```
+
+Add `Button`s to our `register`, `login` and `dashboard` pages for `Login`, `Logout` and `Register`. I also changed the router layouting from `Stack` to `Tabs` in my `(public)/_layout.tsx` to be able to navigate via tabs instead.
+
+[View my full commit here](https://github.com/Tokels/react-native-template/commit/9cc0a17d1fb0b478d4bd9655a3d4e3d0b50349d5)
+
+### Step 6. Create TokenProvider with Token Query and Mutations
+
+Now, to keep our components as clean as possible, and that goes for our Context Components as well, we'll do some separation of concerns. E.g. the `token` state variable is determined by async API calls to an authentication server. Therefore, we could create a TokenProvider, similar to the [TodosProvider](https://juliastjerna.vercel.app/posts/todos-provider-tanstack-query), using TanStack Query to have one provider that handles the logic and async calls for the JWT token.
+
+Let's start with adding the query functions: initialize, login, refresh, register and logout. These will make API calls in the future to retrieve the valid token, but for now, we'll just mock a resolved promise that returns 'valid-token' as a string.
+
+```javascript
+export const initialize = async () => {
+  const token = await secureStoreGetValueFor("token");
+  console.log(token);
+  return token;
+};
+
+export const login = async (): Promise<string> => {
+  const token = await Promise.resolve("valid-token"); // Will be replaced with API call
+  await secureStoreSave("token", token);
+  return token;
+};
+
+export const refresh = async () => {
+  const token = await Promise.resolve("valid-token"); // Will be replaced with API call
+  await secureStoreSave("token", token);
+  return token;
+};
+
+export const register = async () => {
+  const token = await Promise.resolve("valid-token"); // Will be replaced with API call
+  await secureStoreSave("token", token);
+  return token;
+};
+
+export const logout = async () => {
+  await secureStoreDelete("token");
+};
+```
+
+Next step is to create the query and the mutations for these in a provider with variables that we can access via a useToken hook:
+
+```javascript
+type TokenProps = {
+  token: string,
+  loginToken: () => void,
+  deleteToken: () => void,
+  refreshToken: () => void,
+  registerToken: () => void,
+};
+
+const TokenContext = createContext < Partial < TokenProps >> {};
+
+export function useToken() {
+  return useContext(TokenContext);
+}
+
+export const TokenProvider = ({ children }: { children: ReactElement }) => {
+  const queryClient = useQueryClient();
+
+  const { data: token } = useQuery({
+    queryKey: ["token"],
+    queryFn: initialize,
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: (token) => {
+      queryClient.setQueryData(["token"], token);
+    },
+  });
+
+  const loginToken = () => {
+    loginMutation.mutate();
+  };
+
+  const deleteMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      queryClient.setQueryData(["token"], "");
+    },
+  });
+
+  const deleteToken = () => {
+    deleteMutation.mutate();
+  };
+
+  const refreshMutation = useMutation({
+    mutationFn: refresh,
+    onSuccess: (token) => {
+      queryClient.setQueryData(["token"], token);
+    },
+  });
+
+  const refreshToken = () => {
+    refreshMutation.mutate();
+  };
+
+  const registerMutation = useMutation({
+    mutationFn: register,
+    onSuccess: (token) => {
+      queryClient.setQueryData(["token"], token);
+    },
+  });
+
+  const registerToken = () => {
+    registerMutation.mutate();
+  };
+
+  return (
+    <TokenContext.Provider
+      value={{
+        token,
+        loginToken,
+        deleteToken,
+        refreshToken,
+        registerToken,
+      }}
+    >
+      {children}
+    </TokenContext.Provider>
+  );
+};
+```
+
+Now, in our `AuthProvider`, we can use the mutations like so:
+
+```javascript
+  const { token, loginToken, deleteToken, registerToken } = useToken();
+
+  const handleLogin = () => {
+    loginToken!();
+  };
+
+  const handleLogout = () => {
+    deleteToken!();
+  };
+
+  const handleRegister = () => {
+    registerToken!();
+  };
+```
+
+Don't forget to wrap your components with this provider, including wrapping the AuthProvider!
+
+[View my full commit here](https://github.com/Tokels/react-native-template/commit/70b246f46ea4041bb6713d4b2c0c28ec340e8f83)
+
+### Step 7. Add logic for refresh token, part 1
+
+We want our code to check if the token that is saved in SecureStore has expired or not, and we also want to change the `token` variable from `string` to `object`.
+
+For this step, it's easier if you view it via [this commit](https://github.com/Tokels/react-native-template/pull/52/files#diff-12f2da7a3b67c69cba2096667591d0305bc8554dc9d0c1b7c79f7bc146830366) so that you can compare with the previous step.
+
+What we want to do is to add a variable to our `token`. In previous step, our `token` was just a `string`. For this issue, we want the `token` to be an object including some variables for us to use for the lofic: `accessToken`, `expires` etc. We'll start with an object like so:
+
+```javascript
+const token = {
+  accessToken: "valid-token",
+  expires: Date.now() + 86400000,
+};
+```
+
+The `expires` value is in milliseconds, and we're adding 24 hours.
+
+We want our server, or an API, to supply us with the data, but for now, we'll mock a Promise by just using `Promise.resolve(token)`.
+
+When we initialize the app we want to check the token and if it's valid.
