@@ -442,7 +442,7 @@ Don't forget to wrap your components with this provider, including wrapping the 
 
 [View my full commit here](https://github.com/Tokels/react-native-template/commit/70b246f46ea4041bb6713d4b2c0c28ec340e8f83)
 
-### Step 7. Add logic for refresh token, part 1
+### Step 7a. Add logic for refresh token, part 1
 
 We want our code to check if the token that is saved in SecureStore has expired or not, and we also want to change the `token` variable from `string` to `object`.
 
@@ -462,3 +462,65 @@ The `expires` value is in milliseconds, and we're adding 24 hours.
 We want our server, or an API, to supply us with the data, but for now, we'll mock a Promise by just using `Promise.resolve(token)`.
 
 When we initialize the app we want to check the token and if it's valid.
+
+### Sidestep, JWT in real life
+
+In previous example, this could happen:
+
+E.g. Jane will login 25th of January 09.54. Her access token will be valid until 26th of January 10.54.
+
+The 26th of January, 11.22, Jane opens the app again and gets frustrated that she needs to login again even though she feels like she just used the application.
+
+Therefore, we need some changes in our architecture for this application.
+
+We want the `access token` to only be valid for a short amount of time and we want to introduce a `refresh token`. The idea is that the client is going to try to make a request using the `access token`, the server is going to block the request with a `401 unauthorized`, but since a `refresh token` hasn't expired we'll make another request to the server with the `refresh token`. The server will respond with a new `access token` so that the client can try to make the request again.
+
+Let's add to our JWT object:
+
+```javascript
+const token = {
+  accessToken: "valid-token",
+  accessTokenExpires: Date.now() + 600000 // 10 min
+  refreshToken: "valid-token",
+  refreshTokenExpires: Date.now() + 2629746000 // 1 month
+};
+```
+
+There's a way to do what follows with `axios interceptor`, but before doing that lets understand how it would be done without it.
+
+Let's mock our requests, a bit of sudo coding, but just so you can understand what's happening:
+
+```javascript
+const getUserProfile = (token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+  };
+
+  const profile = axios.get(`${API_URL}/profile`, config);
+
+  return profile;
+};
+```
+
+```javascript
+const anyRequest = () => {
+  try {
+    const token = // get from where you have stored it on the client, e.g. in cookies, localstorage, securestore
+    const profile = getUserProfile(token);
+    setUserProfile(profile);
+  } catch (err) {
+    if (err.status === 401) {
+      const refreshTokenExpires = // get from where you have stored it on the client
+      if (refreshTokenExpires < Date.now()) {
+        // redirect to login page
+      }
+      const token = axios.post(`${API_URL}/refresh_token`, refreshToken);
+      // set token where you have stored it on the client
+      const profile = getUserProfile(token);
+      setUserProfile(profile);
+    }
+  }
+};
+```
+
+Using axios, you can use `interceptors` to do this for you automatically. But since we are creating a simple authentication system now for this release we will keep the architecture to only have an access token that expires after 24 hours. In real life, this access token will probably expires within minutes, and we would have a refresh token that updates the access token when we're making api calls.
